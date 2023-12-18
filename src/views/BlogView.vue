@@ -20,10 +20,12 @@
   function newPost(Post) {
     state.Posts.push(Post)
   }
+
 </script>
 
 <template>
   <Navbar @addPost="displayAddPost" />
   <AddPost v-if="state.Page == 'AddPostView'" @backPostContainer="displayPost" @savePost="newPost"/>
-  <PostContainer v-if="state.Page == 'PostContainerView'" :Posts="state.Posts"/>
+  <PostContainer v-if="state.Page == 'PostContainerView'" :Posts="state.Posts" />
+  
 </template>
