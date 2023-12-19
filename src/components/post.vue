@@ -3,7 +3,7 @@
       <div class="bg-white shadow-md border border-gray-200 rounded-lg max-w-sm mb-5">
         
         <a href="#">
-          <img class="rounded-t-md rounded-b-md" src="https://images.seneweb.com/dynamic/modules/news/images/gen/fb/289b4f983be301695ccbaa84e993769449b2c33f.jpg" alt="">
+          <img class="rounded-t-md rounded-b-md" :src="`src/assets/${image}`" alt="">
         </a>
         <div class="flex justify-end space-x-4 mr-4 pt-2">
             <i class="ri-file-edit-line text-green-500 text-xl font-semibold cursor-pointer" @click="editPost"></i>
@@ -28,7 +28,7 @@
 
   <script setup>
 
-const emit = defineEmits(['detailPost','title', 'heure', 'description', 'id','deletePost','editPost'])
+const emit = defineEmits(['detailPost','title', 'heure', 'description', 'id','deletePost','editPost','image'])
 
 function ShowPost () {
 emit('detailPost',
@@ -36,6 +36,7 @@ emit('detailPost',
     heure: props.heure,
     description: props.description,
     id: props.id,
+    image: props.image,
   })
 }
 
@@ -44,6 +45,7 @@ const props = defineProps ({
   title: String,
   description : String,
   heure : String,
+  image : String
 })
 function deletePost() {
   emit('deletePost');

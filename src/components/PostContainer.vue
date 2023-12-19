@@ -7,12 +7,13 @@
       :heure ='Post.heure'
       :description = 'Post.description'
       :id= 'Post.id'
+      :image ='Post.image'
       @detailPost="detailPostShow"
       @deletePost=" deletePostHandler(index)"
       @editPost="editPostHandler(Post)"
       />
       </div>
-      <p v-if="props.Posts.length == 0 " class="mt-16 text-center font-bold italic text-xl">Pas de Post pour le moment revenez bientot 👋</p>
+      <p v-if="props.Posts.length == 0 " class="mt-16 text-center font-bold italic text-xl">Pas de Post pour le moment revenez bientot👋</p>
       <DetailPost v-if="state.Page === 'DetailPostView'" @showPost="showPostContainer" :post="state.selectedPost"/>
       <AddPost v-if="state.Page === 'AddPostView'" :editPostData="state.editPostData" @backPostContainer="cancelEdit" @updatePost="updatePostHandler"/>
     </div>

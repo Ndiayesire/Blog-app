@@ -23,8 +23,12 @@
         <label class="mb-3 block text-base font-medium text-[#07074D]"> Description </label>
         <textarea v-model ="state.description" rows="4"  class="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:shadow-md" ></textarea>
       </div>
+      <div class="mb-5">
+        <label class="mb-3 block text-base font-medium text-[#07074D]"> Image </label>
+        <input @change="handleFileChange" type="file" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:shadow-md"/>
+      </div>
       <div class="flex justify-center items-center space-x-6">
-        <button class="hover:shadow-form rounded-md bg-green-600 py-3 px-8 text-base font-semibold text-white outline-none text-center" @click="submitForm"> Soumettre</button>
+        <button v-if="!props.editPostData" class="hover:shadow-form rounded-md bg-green-600 py-3 px-8 text-base font-semibold text-white outline-none text-center" @click="submitForm"> Soumettre</button>
         <button  v-if="props.editPostData" class="hover:shadow-form rounded-md bg-yellow-500 py-3 px-8 text-base font-semibold text-white outline-none text-center" @click="updatePost"> Mettre à Jour</button>
 
       </div>
@@ -48,8 +52,15 @@ const state = reactive ({
     id : '',
     title : '',
     heure: '',
-    description:''
+    description:'',
+    image: null,
 })
+
+const handleFileChange = (event) => {
+  const file = event.target.files[0];
+  const fileName = file.name;
+  state.image = fileName;
+};
 
 onMounted(() => {
   populateFields();
@@ -65,6 +76,7 @@ function populateFields() {
     state.title = props.editPostData.title || '';
     state.heure = props.editPostData.heure || '';
     state.description = props.editPostData.description || '';
+    state.image = props.editPostData.image || '';
   }
 }
 
@@ -79,7 +91,9 @@ const submitForm = () => {
     title: state.title,
     heure: state.heure,
     description: state.description,
+    image : state.image
   };
+  console.log(newPost)
   emit('savePost', newPost);
 
   resetForm();
@@ -91,6 +105,7 @@ const updatePost = () => {
     title: state.title,
     heure: state.heure,
     description: state.description,
+    image : state.image
   };
   emit('updatePost', updatedPost);
 
