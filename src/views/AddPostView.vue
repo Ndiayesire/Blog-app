@@ -2,7 +2,7 @@
   <Navbar/>
 <div class="row pt-3">
     <div class="flex items-center justify-center space-x-8">
-      <router-link to="/Posts"><i class="ri-arrow-left-line text-2xl cursor-pointer pt-2 text-green-600  hover:text-gray-600"></i></router-link>
+      <router-link to="/admin/Posts"><i class="ri-arrow-left-line text-2xl cursor-pointer pt-2 text-green-600  hover:text-gray-600"></i></router-link>
       <h1 class=" text-center my-5 text-white text-2xl font-bold bg-green-500 rounded-md w-[15rem] shadow-md">Ajouter un article</h1>
     </div>
     <div class="col-6">
@@ -28,7 +28,7 @@
         <input type="file" @change="handleFileChange" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:shadow-md"/>
       </div>
       <div class="flex justify-center items-center space-x-6">
-        <router-link to="/Posts"><button  class="hover:shadow-form rounded-md bg-green-600 py-3 px-8 text-base font-semibold text-white outline-none text-center" @click="submitPost">{{ isEditing ? 'Mettre à jour' : 'Soumettre' }}</button></router-link>
+        <router-link to="/admin/Posts"><button  class="hover:shadow-form rounded-md bg-green-600 py-3 px-8 text-base font-semibold text-white outline-none text-center" @click="submitPost">{{ isEditing ? 'Mettre à jour' : 'Soumettre' }}</button></router-link>
       </div>
       </div>
      

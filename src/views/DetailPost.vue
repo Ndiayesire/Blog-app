@@ -1,8 +1,8 @@
 <template>
   <Navbar/>
-  <div class="mb-4 md:mb-0 w-full max-w-screen-md mx-auto relative" style="height: 24em;">
+  <div class="mb-4 md:mb-0 w-full max-w-screen-md mx-auto relative mt-5 shadow rounded-lg" style="height: 24rem;"  >
     <div class="absolute left-0 bottom-0 w-full h-full z-10 rounded-b-lg pt-3" style="background-image: linear-gradient(180deg,transparent,rgba(16, 141, 78, 0.7));">
-      <router-link to="/Posts" exact><i class="ri-arrow-left-line text-3xl cursor-pointer text-white ml-5 shadow-md rounded-full border-2 bg-green-600 " @click=""></i></router-link>
+      <router-link to="/admin/posts" exact><i class="ri-arrow-left-line text-3xl cursor-pointer text-white ml-5 shadow-md rounded-full border-2 bg-green-600 " @click=""></i></router-link>
     </div>
     <img :src="`/src/assets/${post.image}`" class="absolute rounded-lg left-0 top-0 w-full h-full z-0 object-cover" v-if="post" />
     <div class="p-4 absolute bottom-0 left-0 z-20" v-if="post">

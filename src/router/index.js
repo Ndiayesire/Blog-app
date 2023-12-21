@@ -10,15 +10,15 @@ const router = createRouter({
   routes: [
     { 
       path: '/',
-     redirect: '/login'
+     redirect: '/admin/login'
      },
     {
-      path: '/login',
+      path: '/admin/login',
       name: 'login',
       component: LoginView
     },
     {
-      path: '/Posts',
+      path: '/admin/Posts',
       name: 'blog',
       component: BlogView,
       meta: {
@@ -26,7 +26,7 @@ const router = createRouter({
       } 
     },
     {
-      path: '/Post/add',
+      path: '/admin/post/add',
       name: 'add',
       component: AddPostView,
       meta: {
@@ -34,7 +34,7 @@ const router = createRouter({
       } 
     },
     {
-      path: '/Post/:postId',
+      path: '/admin/post/:postId',
       name: 'detailPost',
       component: DetailPostView,
       meta: {
@@ -42,7 +42,7 @@ const router = createRouter({
       } 
     },
     {
-      path: '/editPost/:postId',
+      path: '/admin/edit/:postId',
       name: 'editPost',
       component: AddPostView,
       props: true,
@@ -53,9 +53,6 @@ const router = createRouter({
     },
   ]
 })
-
-
-
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
   if (to.matched.some(record => record.meta.requiresAuth)) {

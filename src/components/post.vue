@@ -1,9 +1,8 @@
 <template>
   <div class="flex justify-start space-x-8 pt-2 ml-8">
     <div class="bg-white shadow-md border border-gray-200 rounded-lg max-w-sm mb-5">
-
       <a href="#">
-          <img class="rounded-t-md rounded-b-md" :src="`src/assets/${post.image}`" alt="">
+          <img class="rounded-t-md rounded-b-md" :src="`/src/assets/${post.image}`" alt="">
         </a>
 
       <div class="flex justify-end space-x-4 mr-4 pt-2">

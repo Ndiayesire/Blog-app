@@ -42,9 +42,8 @@ const password = ref('');
 
 const login = () => {
 authStore.login(username.value, password.value);
-
   if (authStore.isAuthenticated) {
-    router.push('/posts');
+    router.push('/admin/Posts');
     $toast.success('Authentification reussi', {
     position: 'top-right',
     timeout: 3000,
