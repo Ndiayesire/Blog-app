@@ -1,22 +1,23 @@
 <template>
-    <div class="min-h-screen flex items-center justify-center bg-green-900">
-      <div id="snowstorm-container"></div>
+    <div class="min-h-screen flex items-center justify-center bg-cover bg-center">
       <div class="max-w-screen-md">
-        <div class="bg-gray-50 p-8 rounded-md shadow-lg w-[30rem] h-[28rem] border-2 border-gray-800">
+        <div class="bg-gray-100 p-8 rounded-md shadow-lg w-[30rem] h-[25rem]">
           <div class="flex justify-center items-center">
-            <img src="/src/assets/login.png" class="h-[7rem] cursor-pointer hover:-translate-y-1 hover:scale-110">
+            <!-- <img src="/src/assets/login.png" class="h-[7rem] cursor-pointer hover:-translate-y-1 hover:scale-110"> -->
+            <h1 class="text-6xl font-bold font-mono italic bg-green-500 tracking-tighter">Li</h1><h1 class="text-6xl font-bold font-mono italic bg-yellow-200 tracking-tighter">Xeew</h1><h1 class="text-6xl font-bold font-mono italic bg-red-400 tracking-tighter">Senegal</h1>
+
           </div>
           <div class="col-6">
             <div class="flex justify-center items-center pt-8">
               <div class="form-group w-[100vh]">
                 <div class="mb-5">
-                  <input v-model="username" type="text" placeholder="Nom d'utilisateur" class="focus:border-b-[#98d0c0] outline-none w-full rounded-md border-2 border-gray-200 bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:shadow-md" />
+                  <input v-model="username" type="text" placeholder="Nom d'utilisateur" class="focus:border-b-green-700 outline-none w-full rounded-md border-2 border-gray-200 bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:shadow-md" />
                 </div>
                 <div class="mb-5">
-                  <input v-model="password" type="password" placeholder="Mot de passe" class="focus:border-b-[#98d0c0] w-full rounded-md border-2 border-gray-200 bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:shadow-md" />
+                  <input v-model="password" type="password" placeholder="Mot de passe" class="focus:border-b-green-700  w-full rounded-md border-2 border-gray-200 bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:shadow-md" />
                 </div>
                 <div class="flex justify-center items-center pt-7">
-                  <button @click="login" class="shadow rounded-md bg-[#98d0c0] py-3 px-8 text-base font-semibold text-white outline-none text-center hover:-translate-y-1">Se connecter</button>
+                  <button @click="login" class="shadow rounded-md bg-green-700  py-3 px-8 text-base font-semibold text-white outline-none text-center hover:-translate-y-1">Se connecter</button>
                 </div>
               </div>
             </div>

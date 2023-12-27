@@ -6,10 +6,10 @@
         </a>
 
       <div class="flex justify-end space-x-4 mr-4 pt-2">
-        <router-link :to="{ name: 'editPost', params: { postId: post.id } }">
+        <router-link v-if="isAdmin" :to="{ name: 'editPost', params: { postId: post.id } }">
           <i class="ri-file-edit-line text-green-500 text-xl font-semibold cursor-pointer"></i>
         </router-link>
-        <i class="ri-delete-bin-line text-red-500 text-xl font-semibold cursor-pointer" @click="() => deletePost(post.id)"></i>
+        <i v-if="isAdmin" class="ri-delete-bin-line text-red-500 text-xl font-semibold cursor-pointer" @click="() => deletePost(post.id)"></i>
       </div>
 
       <div class="p-2">
@@ -18,9 +18,9 @@
           <p v-if="post" class="font-semibold text-gray-500 white text-sm"> {{ post.heure }}</p>
         </div>
         <a>
-          <h5 v-if="post" class="text-gray-900 font-bold text-2xl tracking-tight mb-2 pt-1">{{ post.title }}</h5>
+          <h5 v-if="post" class="text-gray-900 font-bold text-2xl tracking-tight mb-2 pt-1 line-clamp-2">{{ post.title }}</h5>
         </a>
-        <p v-if="post" class="font-normal text-gray-700 mb-3">{{ post.description }}</p>
+        <p v-if="post" class="font-normal text-gray-700 mb-3 line-clamp-4">{{ post.description }}</p>
 
         <router-link :to="{ name: 'detailPost', params: { postId: post.id } }">
           <button class="mb-2 float-right text-white bg-green-700 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center">Lire l'article</button>
@@ -32,9 +32,14 @@
 
 <script setup>
 import { usePostStore } from '../stores/postStore';
+import { useAuthStore } from '../stores/authStore';
 
 const props = defineProps(['post']);
 const store = usePostStore();
+const authStore = useAuthStore();
+
+const isAdmin = authStore.isAdmin;
+
 
 const deletePost = (postId) => {
   const confirmDelete = confirm('Es-tu sur de vouloir supprimer cette annonce ce post?');

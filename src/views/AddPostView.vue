@@ -3,7 +3,7 @@
 <div class="row pt-3">
     <div class="flex items-center justify-center space-x-8">
       <router-link to="/admin/Posts"><i class="ri-arrow-left-line text-2xl cursor-pointer pt-2 text-green-600  hover:text-gray-600"></i></router-link>
-      <h1 class=" text-center my-5 text-white text-2xl font-bold bg-green-500 rounded-md w-[15rem] shadow-md">Ajouter un article</h1>
+      <h1 class=" text-center my-5 text-white text-2xl font-bold bg-green-500 rounded-md w-[15rem] shadow-md">{{ isEditing ? 'Mettre à jour article' : 'Ajouter un article' }}</h1>
     </div>
     <div class="col-6">
       <div class="flex justify-center items-center">

@@ -1,6 +1,8 @@
 <template>
   <Navbar/>
-  <div class="mb-4 md:mb-0 w-full max-w-screen-md mx-auto relative mt-5 shadow rounded-lg" style="height: 24rem;"  >
+  <div class="row flex justify-center">
+    <div class="col-6 ml-5">
+      <div class="mb-4 md:mb-0 w-full max-w-screen-md mx-auto relative mt-5 shadow rounded-lg" style="height: 24rem;"  >
     <div class="absolute left-0 bottom-0 w-full h-full z-10 rounded-b-lg pt-3" style="background-image: linear-gradient(180deg,transparent,rgba(16, 141, 78, 0.7));">
       <router-link to="/admin/posts" exact><i class="ri-arrow-left-line text-3xl cursor-pointer text-white ml-5 shadow-md rounded-full border-2 bg-green-600 " @click=""></i></router-link>
     </div>
@@ -18,30 +20,62 @@
       </div>
     </div>
   </div>
-  <div class="px-4 lg:px-0 mt-12 text-gray-700 max-w-screen-md mx-auto text-lg leading-relaxed"  v-if="post">
-    <p class="pb-6">
+  <div class="px-4 lg:px-0 mt-12 text-gray-700 max-w-screen-md mx-auto text-lg leading-relaxed" v-if="post">
+    <p class="pb-6 font-sans">
       {{post.description}}
     </p>
   </div>
-  <div class="flex -4 lg:px-0  text-gray-700 max-w-screen-md mx-auto text-lg leading-relaxed">
-    <div class="flex space-x-5">
-      <textarea  v-model="newComment" rows="4" class="border-2 border-gray-200 rounded-md w-[40rem] outline-none text-sm"></textarea>
-      <button class="btn btn-success text-white" @click="addComment">Ajouter un commentaire</button>
-    </div>
-  </div>
+
    <div class="max-w-screen-md mx-auto pt-8">
-  <div class="flex space-x-2 border-2 bg-gray-100 rounded-md">
-    <i class="ri-chat-1-line text-xl ml-3"></i>
-    <p class="font-bold text-underline">Liste des commentaires</p>
+  <div class="bg-gray-50 p-6">
+    <h2 class="text-lg font-bold mb-4 text-green-700">Commentaires ({{store.comments.length}})</h2>
+    <div class="flex flex-col space-y-4">
+        <div class="bg-white p-4 rounded-lg shadow" v-for="comment in store.comments" :key="index">
+            <h3 class="text-lg font-bold">{{ comment.nom }}</h3>
+            <p class="text-gray-700 text-sm mb-2">Posté le {{ comment.dateTime }}</p>
+            <p class="text-gray-700">{{ comment.text }}
+            </p>
+            <i v-if="isAdmin" class="ri-delete-bin-6-fill text-red-500 ml-2 cursor-pointer float-right" @click="deleteComment(comment.id)"></i>
+        </div>
+    
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-bold mb-2 text-green-700">Ajouter un commentaire</h3>
+            <div class="mb-4">
+                <input
+                    v-model="commentName"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="name" type="text" placeholder="Enter votre nom">
+            </div>
+            <div class="mb-4">
+                <textarea
+                    v-model="newComment"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="comment" rows="3" placeholder="Enter votre commentaire"></textarea>
+            </div>
+            <button
+                class="bg-green-700 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline float-right"
+                @click="addComment">
+                Ajouter un commentaire
+            </button>
+          </div>
+    </div>
+</div>
+</div>
+    </div>
+
+    <div class="col-6">
+    <!-- Your new content goes here -->
+    <div class="max-w-screen-md mx-auto">
+      <div class="p-6 text-center">
+        <!-- <h1 class="text-xl font-bold text-gray-700 underline decoration-green-500 italic">Article récents</h1> -->
+        
+      </div>
+    </div>
+</div>
+
   </div>
 
-  <div class="flex justify-between items-center mt-2 bg-gray-100 rounded-3xl px-4 pt-2 pb-2.5 w-[40rem]" v-for="comment in store.comments" :key="index" >
-    <img src="https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-Clipart.png" class="h-8 w-8">
-    <span class="ml-3"></span><br/>
-    <p class="font-semibold" >{{ comment.text }}</p>
-    <i class="ri-delete-bin-6-fill text-red-500 ml-2 cursor-pointer float-right" @click="deleteComment(comment.id)"></i>
-  </div>
-</div>
+  
 </template>
 
 <script setup>
@@ -50,19 +84,28 @@ import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { usePostStore } from '../stores/postStore';
 import { useCommentStore } from '../stores/commentStore';
+import { useAuthStore } from '../stores/authStore';
 
 const postId = ref(null);
 const post = ref(null);
 const postStore = usePostStore(); 
 const store = useCommentStore();
+const authStore = useAuthStore();
 const newComment = ref('');
+const commentName = ref('');
+const isAdmin = authStore.isAdmin;
 
 const addComment = () => {
   if (newComment.value.trim() !== '') {
+    const currentDateTime = new Date();
+    const formattedDateTime = currentDateTime.toLocaleString(); 
     store.addComment({
       text: newComment.value,
+      nom: commentName.value,
+      dateTime: formattedDateTime,
     });
     newComment.value = '';
+    commentName.value = '';
   }
 };
 

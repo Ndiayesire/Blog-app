@@ -10,7 +10,7 @@ const router = createRouter({
   routes: [
     { 
       path: '/',
-     redirect: '/admin/login'
+     redirect: '/Posts'
      },
     {
       path: '/admin/login',
@@ -26,6 +26,11 @@ const router = createRouter({
       } 
     },
     {
+      path: '/Posts',
+      name: 'homeblog',
+      component: BlogView, 
+    },
+    {
       path: '/admin/post/add',
       name: 'add',
       component: AddPostView,
@@ -34,12 +39,9 @@ const router = createRouter({
       } 
     },
     {
-      path: '/admin/post/:postId',
+      path: '/post/:postId',
       name: 'detailPost',
       component: DetailPostView,
-      meta: {
-        requiresAuth: true
-      } 
     },
     {
       path: '/admin/edit/:postId',
