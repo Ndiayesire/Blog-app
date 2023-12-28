@@ -40,14 +40,16 @@ const authStore = useAuthStore();
 
 const isAdmin = authStore.isAdmin;
 
-
-const deletePost = (postId) => {
-  const confirmDelete = confirm('Es-tu sur de vouloir supprimer cette annonce ce post?');
-  if (confirmDelete) {
-    const postIndex = store.posts.findIndex((post) => post.id === postId);
-    if (postIndex !== -1) {
-      store.deletePost(postIndex);
+const deletePost = async (postId) => {
+  const confirmDelete = confirm('Are you sure you want to delete this post?');
+  if (confirmDelete) { 
+    try {
+      await store.deletePost(postId);
+      console.log('Deleting post with custom ID:', postId);
+    } catch (error) {
+      console.error('Error deleting post:', error);
     }
   }
 };
+
 </script>

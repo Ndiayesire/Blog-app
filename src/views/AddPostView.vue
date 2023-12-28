@@ -41,6 +41,7 @@
 import Navbar from '../components/navbar.vue';
 import { usePostStore } from '../stores/postStore';
 import { onMounted, ref, watch } from 'vue';
+import { getFirestore, collection, addDoc } from 'firebase/firestore'; // Import Firestore
 
 const store = usePostStore();
 
@@ -50,15 +51,18 @@ const isEditing = ref(false);
 
 const postFormData = ref({});
 
+// Initialize Firestore
+const firestore = getFirestore();
+
 onMounted(() => {
-  fetchPostData();
+  fetchPost();
 });
 
 watch(() => postId, () => {
-  fetchPostData();
+  fetchPost();
 });
 
-const fetchPostData = () => {
+const fetchPost = () => {
   if (postId) {
     const post = store.getPostById(postId);
     if (post) {
@@ -77,6 +81,27 @@ const handleFileChange = (event) => {
   postFormData.value.image = file.name;
 };
 
+// const submitPost = () => {
+//   if (postId) {
+//     const postIndex = store.posts.findIndex((post) => post.id === postFormData.value.id);
+//     if (postIndex !== -1) {
+//       store.updatePost(postFormData.value.id, postFormData.value);
+//     }
+//   } else {
+//     // Add post to Firestore
+//     addDoc(collection(firestore, 'posts'), postFormData.value)
+//       .then((docRef) => {
+//         postFormData.value.id = docRef.id;
+//         console.log(postFormData.value.id);
+
+//         store.addPost(postFormData.value);
+//       })
+//       .catch((error) => {
+//         console.error("Error adding post: ", error);
+//       });
+//   }
+// };
+
 const submitPost = () => {
   if (postId) {
     const postIndex = store.posts.findIndex((post) => post.id === postFormData.value.id);
@@ -84,7 +109,7 @@ const submitPost = () => {
       store.updatePost(postFormData.value.id, postFormData.value);
     }
   } else {
-    const existingIds = store.posts.map((post) => post.id);
+    const existingIds = store.posts.map((post) => parseInt(post.id)).filter(id => !isNaN(id));
     const newId = existingIds.length > 0 ? Math.max(...existingIds) + 1 : 1;
     postFormData.value.id = newId.toString();
     store.addPost(postFormData.value);

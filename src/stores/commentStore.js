@@ -1,4 +1,7 @@
 import { defineStore } from 'pinia';
+import { getFirestore, collection, addDoc, deleteDoc, doc } from '@firebase/firestore';
+
+const db = getFirestore();
 
 export const useCommentStore = defineStore('commentStore', {
   state: () => ({
@@ -6,15 +9,19 @@ export const useCommentStore = defineStore('commentStore', {
   }),
 
   actions: {
-    addComment(comment) {
-      this.comments.push(comment);
+    async addComment(comment) {
+      const docRef = await addDoc(collection(db, 'comments'), comment);
+      this.comments.push({ id: docRef.id, ...comment });
     },
 
-    deleteComment(commentId) {
-      const commentIndex = this.comments.findIndex((comment) => comment.id === commentId);
-      if (commentIndex !== -1) {
-        this.comments.splice(commentIndex, 1);
-      }
+    async deleteComment(commentId) {
+      await deleteDoc(doc(db, 'comments', commentId));
+      this.comments = this.comments.filter((comment) => comment.id !== commentId);
+    },
+
+    async fetchComments() {
+      const querySnapshot = await getDocs(collection(db, 'comments'));
+      this.comments = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     },
   },
 });

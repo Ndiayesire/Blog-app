@@ -100,9 +100,9 @@ const addComment = () => {
     const currentDateTime = new Date();
     const formattedDateTime = currentDateTime.toLocaleString(); 
     store.addComment({
-      text: newComment.value,
-      nom: commentName.value,
-      dateTime: formattedDateTime,
+    text: newComment.value,
+    nom: commentName.value,
+    dateTime: formattedDateTime,
     });
     newComment.value = '';
     commentName.value = '';
