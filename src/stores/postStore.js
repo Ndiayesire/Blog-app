@@ -10,34 +10,28 @@ export const usePostStore = defineStore('postStore', {
 
   getters: {
     getPostById: (state) => (id) => {
-      return state.posts.find((post) => post.id === id);
+      return state.posts.find((post) => post.docRefId === id);
     },
   },
 
   actions: {
     async fetchPosts() {
       const postsCollection = collection(firestore, 'posts');
-      const querySnapshot = await getDocs(postsCollection);
-      console.log(querySnapshot)
-      this.posts = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      console.log(this.posts)
+      const querySnapshot = await getDocs(postsCollection);   
+      this.posts = querySnapshot.docs.map(doc => {
+        const { id } = doc;
+        const data = doc.data();
+        return { id, ...data, docRefId: id }; 
+      });
+    
+      console.log(this.posts);
     },
 
     async addPost(post) {
       const postsCollection = collection(firestore, 'posts');
       const docRef = await addDoc(postsCollection, post);
-    
-      // Check if the document ID is not already present in the posts array
-      const isDuplicate = this.posts.some((existingPost) => existingPost.id === docRef.id);
-    
-      if (!isDuplicate) {
-        this.posts.push({ id: docRef.id, ...post });
-      } else {
-        console.warn(`Document with ID ${docRef.id} is already present in the posts array.`);
-      }
     },
     
-
     async deletePost(postId) {
       const postsCollection = collection(firestore, 'posts');
       await deleteDoc(doc(postsCollection, postId));

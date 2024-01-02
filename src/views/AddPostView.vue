@@ -21,7 +21,7 @@
       </div>
       <div class="mb-5">
         <label class="mb-3 block text-base font-medium text-[#07074D]"> Description </label>
-        <textarea v-model="postFormData.description" rows="4"  class="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:shadow-md" ></textarea>
+        <textarea v-model="postFormData.description" rows="10"  class="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:shadow-md" ></textarea>
       </div>
       <div class="mb-5">
         <label class="mb-3 block text-base font-medium text-[#07074D]"> Image </label>
@@ -41,7 +41,7 @@
 import Navbar from '../components/navbar.vue';
 import { usePostStore } from '../stores/postStore';
 import { onMounted, ref, watch } from 'vue';
-import { getFirestore, collection, addDoc } from 'firebase/firestore'; // Import Firestore
+import { getFirestore } from 'firebase/firestore'; // Import Firestore
 
 const store = usePostStore();
 
@@ -51,7 +51,6 @@ const isEditing = ref(false);
 
 const postFormData = ref({});
 
-// Initialize Firestore
 const firestore = getFirestore();
 
 onMounted(() => {
@@ -66,7 +65,6 @@ const fetchPost = () => {
   if (postId) {
     const post = store.getPostById(postId);
     if (post) {
-      postFormData.value.id = post.id;
       postFormData.value.title = post.title;
       postFormData.value.heure = post.heure;
       postFormData.value.description = post.description;
@@ -81,37 +79,13 @@ const handleFileChange = (event) => {
   postFormData.value.image = file.name;
 };
 
-// const submitPost = () => {
-//   if (postId) {
-//     const postIndex = store.posts.findIndex((post) => post.id === postFormData.value.id);
-//     if (postIndex !== -1) {
-//       store.updatePost(postFormData.value.id, postFormData.value);
-//     }
-//   } else {
-//     // Add post to Firestore
-//     addDoc(collection(firestore, 'posts'), postFormData.value)
-//       .then((docRef) => {
-//         postFormData.value.id = docRef.id;
-//         console.log(postFormData.value.id);
-
-//         store.addPost(postFormData.value);
-//       })
-//       .catch((error) => {
-//         console.error("Error adding post: ", error);
-//       });
-//   }
-// };
-
 const submitPost = () => {
   if (postId) {
-    const postIndex = store.posts.findIndex((post) => post.id === postFormData.value.id);
-    if (postIndex !== -1) {
-      store.updatePost(postFormData.value.id, postFormData.value);
-    }
-  } else {
-    const existingIds = store.posts.map((post) => parseInt(post.id)).filter(id => !isNaN(id));
-    const newId = existingIds.length > 0 ? Math.max(...existingIds) + 1 : 1;
-    postFormData.value.id = newId.toString();
+  const postIndex = store.posts.findIndex((post) => post.id === postId);
+  if (postIndex !== -1) {
+    store.updatePost(postId, postFormData.value);
+  }
+} else {
     store.addPost(postFormData.value);
   }
 };

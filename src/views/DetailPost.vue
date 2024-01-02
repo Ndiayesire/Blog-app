@@ -21,7 +21,7 @@
     </div>
   </div>
   <div class="px-4 lg:px-0 mt-12 text-gray-700 max-w-screen-md mx-auto text-lg leading-relaxed" v-if="post">
-    <p class="pb-6 font-sans">
+    <p class="font-sans first-letter:text-5xl first-letter:text-green-700">
       {{post.description}}
     </p>
   </div>
@@ -30,7 +30,7 @@
   <div class="bg-gray-50 p-6">
     <h2 class="text-lg font-bold mb-4 text-green-700">Commentaires ({{store.comments.length}})</h2>
     <div class="flex flex-col space-y-4">
-        <div class="bg-white p-4 rounded-lg shadow" v-for="comment in store.comments" :key="index">
+        <div class="bg-white p-4 rounded-lg shadow" v-for="(comment, index) in store.comments" :key="index">
             <h3 class="text-lg font-bold">{{ comment.nom }}</h3>
             <p class="text-gray-700 text-sm mb-2">Posté le {{ comment.dateTime }}</p>
             <p class="text-gray-700">{{ comment.text }}
@@ -63,24 +63,13 @@
 </div>
     </div>
 
-    <div class="col-6">
-    <!-- Your new content goes here -->
-    <div class="max-w-screen-md mx-auto">
-      <div class="p-6 text-center">
-        <!-- <h1 class="text-xl font-bold text-gray-700 underline decoration-green-500 italic">Article récents</h1> -->
-        
-      </div>
-    </div>
-</div>
-
   </div>
 
   
 </template>
-
 <script setup>
 import Navbar from '../components/navbar.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute } from 'vue-router';
 import { usePostStore } from '../stores/postStore';
 import { useCommentStore } from '../stores/commentStore';
@@ -100,6 +89,7 @@ const addComment = () => {
     const currentDateTime = new Date();
     const formattedDateTime = currentDateTime.toLocaleString(); 
     store.addComment({
+    postId: postId.value,
     text: newComment.value,
     nom: commentName.value,
     dateTime: formattedDateTime,
@@ -115,14 +105,29 @@ const deleteComment = (commentId) => {
 
 const route = useRoute();
 
-onMounted(() => {
+onMounted(async () => {
   postId.value = route.params.postId;
-  fetchPostDetails();
+  const storedPostDetails = localStorage.getItem(`postDetails_${postId.value}`);
+  if (storedPostDetails) {
+    post.value = JSON.parse(storedPostDetails);
+  } else {
+    fetchPostDetails();
+  }
+  await fetchComments();
 });
+
+onBeforeUnmount(() => {
+  if (post.value) {
+    localStorage.setItem(`postDetails_${postId.value}`, JSON.stringify(post.value));
+  }
+});
+
 
 const fetchPostDetails = () => {
   post.value = postStore.getPostById(postId.value);
 };
 
-
+const fetchComments = async () => {
+  await store.fetchCommentsForPost(postId.value);
+};
 </script>

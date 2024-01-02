@@ -1,6 +1,12 @@
+// authStore.js
 import { defineStore } from 'pinia';
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
-import { firebaseApp } from '@/db/firebase'; 
+import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { firebaseApp } from '@/db/firebase';
+import { createPinia } from 'pinia';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
+
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -11,30 +17,13 @@ export const useAuthStore = defineStore('auth', {
   }),
 
   actions: {
-
-    // async register(email, password) {
-    //   try {
-    //     const auth = getAuth(firebaseApp);
-    //     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    //     this.user = userCredential.user;
-    //     this.isAuthenticated = true;
-    //     this.isAdmin = false; 
-    //     this.error = null;
-    //   } catch (error) {
-    //     this.isAuthenticated = false;
-    //     this.isAdmin = false;
-    //     this.error = 'Registration failed. Please try again.';
-    //     console.error('Registration Error:', error);
-    //   }
-    // },
-
     async login(email, password) {
       try {
         const auth = getAuth(firebaseApp);
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         this.user = userCredential.user;
         this.isAuthenticated = true;
-        this.isAdmin = true; // You may want to update this based on your user roles
+        this.isAdmin = true;
         this.error = null;
       } catch (error) {
         this.isAuthenticated = false;
@@ -52,14 +41,11 @@ export const useAuthStore = defineStore('auth', {
       this.isAdmin = false;
       this.error = null;
     },
+  },
 
-    onAuthStateChanged() {
-      const auth = getAuth(firebaseApp);
-      onAuthStateChanged(auth, (user) => {
-        this.user = user;
-        this.isAuthenticated = user !== null;
-        this.isAdmin = user ? false : false;
-      });
-    },
+  persist: {
+    storage: localStorage,
   },
 });
+
+export default pinia;

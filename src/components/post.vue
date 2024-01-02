@@ -6,10 +6,10 @@
         </a>
 
       <div class="flex justify-end space-x-4 mr-4 pt-2">
-        <router-link v-if="isAdmin" :to="{ name: 'editPost', params: { postId: post.id } }">
+        <router-link v-if="isAdmin" :to="{ name: 'editPost', params: { postId: post.docRefId } }">
           <i class="ri-file-edit-line text-green-500 text-xl font-semibold cursor-pointer"></i>
         </router-link>
-        <i v-if="isAdmin" class="ri-delete-bin-line text-red-500 text-xl font-semibold cursor-pointer" @click="() => deletePost(post.id)"></i>
+        <i v-if="isAdmin" class="ri-delete-bin-line text-red-500 text-xl font-semibold cursor-pointer" @click="() => deletePost(post.docRefId )"></i>
       </div>
 
       <div class="p-2">
@@ -22,7 +22,7 @@
         </a>
         <p v-if="post" class="font-normal text-gray-700 mb-3 line-clamp-4">{{ post.description }}</p>
 
-        <router-link :to="{ name: 'detailPost', params: { postId: post.id } }">
+        <router-link :to="{ name: 'detailPost', params: { postId: post.docRefId } }">
           <button class="mb-2 float-right text-white bg-green-700 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center">Lire l'article</button>
         </router-link>
       </div>
@@ -41,11 +41,10 @@ const authStore = useAuthStore();
 const isAdmin = authStore.isAdmin;
 
 const deletePost = async (postId) => {
-  const confirmDelete = confirm('Are you sure you want to delete this post?');
+  const confirmDelete = confirm('Are you sure you want to delete this post ?');
   if (confirmDelete) { 
     try {
       await store.deletePost(postId);
-      console.log('Deleting post with custom ID:', postId);
     } catch (error) {
       console.error('Error deleting post:', error);
     }
