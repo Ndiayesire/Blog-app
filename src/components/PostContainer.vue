@@ -1,75 +1,38 @@
 <template>
-      <div class="row pt-3">
+  <div class="row pt-3">
     <div class="col-6">
-      <div class="flex flex-row" v-if="state.Page === 'PostContainerView'">
-      <Post v-for="(Post, index) in props.Posts" :key="index"
-      :title = 'Post.title'
-      :heure ='Post.heure'
-      :description = 'Post.description'
-      :id= 'Post.id'
-      :image ='Post.image'
-      @detailPost="detailPostShow"
-      @deletePost=" deletePostHandler(index)"
-      @editPost="editPostHandler(Post)"
-      />
+      <div class="flex flex-row">
+        <Post v-for="post in posts" :key="post.id" :post="post" />
       </div>
-      <p v-if="props.Posts.length == 0 " class="mt-16 text-center font-bold italic text-xl">Pas de Post pour le moment revenez bientot👋</p>
-      <DetailPost v-if="state.Page === 'DetailPostView'" @showPost="showPostContainer" :post="state.selectedPost"/>
-      <AddPost v-if="state.Page === 'AddPostView'" :editPostData="state.editPostData" @backPostContainer="cancelEdit" @updatePost="updatePostHandler"/>
+      <p class="mt-16 text-center font-mono font-bold italic text-xl" v-if="store.posts.length === 0">Pas de post pour le moment créez en un !<span class="loading loading-spinner loading-lg text-success"></span></p>
     </div>
   </div>
 </template>
 
 <script setup>
-import Post from '../components/post.vue'
-import DetailPost from '@/views/DetailPost.vue';
-import AddPost from '../views/AddPostView.vue'
+import Post from '../components/post.vue';
+import { usePostStore } from '../stores/postStore';
+import { useAuthStore } from '@/stores/authStore'; // Update the path
 
-const props = defineProps ({
-    Posts : Array
-})
+import { onMounted, ref, computed } from 'vue';
 
-import { reactive } from 'vue';
+const store = usePostStore();
+const authStore = useAuthStore();
 
-const state = reactive({
-  Posts: [],
-  Page: 'PostContainerView',
-  editPostData: null,
+const loading = ref(true);
+
+onMounted(async () => {
+  await store.fetchPosts();
+  loading.value = false;
 });
 
-function detailPostShow(post) {
-state.selectedPost = post;
- state.Page = 'DetailPostView';
-}
-function showPostContainer() {
-  state.Page = 'PostContainerView';
-}
-
-function deletePostHandler(index) {
-  if (index >= 0 && index < props.Posts.length) {
-    props.Posts.splice(index, 1);
-  } else {
-    console.warn('Invalid');
+const posts = computed(() => {
+  if (authStore.isAdmin === 'admin') {
+    return store.posts; 
+  } else if ( authStore.isAdmin === 'editeur') {
+    return store.posts.filter(post => post.createBy === authStore.user.name);
+  }else {
+    return store.posts; 
   }
-}
-
-function editPostHandler(post) {
-  state.editPostData = { ...post };
-  state.Page = 'AddPostView';
-}
-function cancelEdit() {
-  state.editPostData = null;
-  state.Page = 'PostContainerView';
-}
-
-function updatePostHandler(updatedPost) {
-  const index = props.Posts.findIndex((post) => post.id === updatedPost.id);
-  if (index !== -1) {
-    props.Posts[index] = { ...updatedPost };
-    cancelEdit();
-  } else {
-    console.warn('Post not found for update');
-  }
-}
-
+});
 </script>
