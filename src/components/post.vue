@@ -16,6 +16,7 @@
         <div class="flex space-x-2">
           <i class="ri-calendar-line text-gray-500 text-sm"></i>
           <p v-if="post" class="font-semibold text-gray-500 white text-sm"> {{ post.heure }}</p>
+          <p v-if="post" class="font-semibold text-gray-500 white text-sm">Par <strong class="text-green-800">{{ post.createBy }}</strong></p>        
         </div>
         <a>
           <h5 v-if="post" class="text-gray-900 font-bold text-2xl tracking-tight mb-2 pt-1 line-clamp-2">{{ post.title }}</h5>

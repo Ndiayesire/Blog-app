@@ -9,7 +9,7 @@
       <div class="flex justify-center items-center">
       <div class="form-group w-[100vh]">
          <div class="mb-5">
-        <input hidden type="text" v-model="postFormData.id"  class="outline-none w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:shadow-md"/>
+        <input hidden type="text" v-model="postFormData.createBy"  class="outline-none w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:shadow-md"/>
       </div>
       <div class="mb-5">
         <label  class="mb-3 block text-base font-medium text-[#07074D]" >Titre </label>
@@ -40,20 +40,30 @@
 <script setup>
 import Navbar from '../components/navbar.vue';
 import { usePostStore } from '../stores/postStore';
-import { onMounted, ref, watch } from 'vue';
-import { getFirestore } from 'firebase/firestore'; // Import Firestore
+import { onMounted, ref, watch, computed } from 'vue';
+import { getFirestore } from 'firebase/firestore';
+import { useAuthStore } from '@/stores/authStore';
+
 
 const store = usePostStore();
+const authStore = useAuthStore();
+
 
 const { postId } = defineProps(['postId']);
 
 const isEditing = ref(false);
+const user = computed(() => authStore.user);
 
-const postFormData = ref({});
+const postFormData = ref({
+  createBy: user.value ? user.value.name : '',
+});
 
 const firestore = getFirestore();
 
 onMounted(() => {
+  if (!user.value && authStore.isAuthenticated) {
+        authStore.fetchUserData();
+      }
   fetchPost();
 });
 

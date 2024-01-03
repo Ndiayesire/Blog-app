@@ -3,7 +3,7 @@
       <div class="max-w-screen-md">
         <div class="bg-gray-100 p-8 rounded-md shadow-lg w-[30rem] h-[25rem]">
           <div class="flex justify-center items-center">
-            <h1 class="text-6xl font-bold font-mono italic bg-green-500 tracking-tighter">Li</h1><h1 class="text-6xl font-bold font-mono italic bg-yellow-200 tracking-tighter">Xeew</h1><h1 class="text-6xl font-bold font-mono italic bg-red-400 tracking-tighter">Senegal</h1>
+            <h1 class="text-6xl font-bold font-mono italic bg-green-500 tracking-tighter">Li</h1><h1 class="text-6xl font-bold font-mono italic bg-yellow-200 tracking-tighter cursor-pointer">Xeew</h1><h1 class="text-6xl font-bold font-mono italic bg-red-400 tracking-tighter">Senegal</h1>
           </div>
           <div class="col-6">
             <div class="flex justify-center items-center pt-8">
@@ -55,23 +55,6 @@
       });
     }
   };
-
-//   const register = async () => {
-//   await authStore.register(email.value, password.value);
-
-//   if (authStore.isAuthenticated) {
-//     router.push('/admin/login');
-//     $toast.success('Registration successful', {
-//       position: 'top-right',
-//       timeout: 3000,
-//     });
-//   } else {
-//     $toast.error('Registration failed. Please try again.', {
-//       position: 'top-right',
-//       timeout: 3000,
-//     });
-//   }
-// };
   </script>
 
   

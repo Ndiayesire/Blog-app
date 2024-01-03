@@ -13,15 +13,14 @@
       </h2>
       <div class="flex mt-3 space-x-2">
         <i class="ri-calendar-line text-white"></i>
-        <p class="font-semibold text-white text-xs pt-1">
-           {{ post.heure }}
-           </p>
+        <p class="font-semibold text-white text-xs pt-1"> {{ post.heure }} </p>
+        <p class="font-semibold text-white text-sm mb-0">Par <strong class="text-yellow-300">{{ post.createBy }}</strong></p> 
         
       </div>
     </div>
   </div>
   <div class="px-4 lg:px-0 mt-12 text-gray-700 max-w-screen-md mx-auto text-lg leading-relaxed" v-if="post">
-    <p class="font-sans first-letter:text-5xl first-letter:text-green-700">
+    <p class="font-sans first-letter:text-5xl first-letter:text-green- first-letter:text-bold">
       {{post.description}}
     </p>
   </div>
@@ -43,14 +42,14 @@
             <div class="mb-4">
                 <input
                     v-model="commentName"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     id="name" type="text" placeholder="Enter votre nom">
             </div>
             <div class="mb-4">
                 <textarea
                     v-model="newComment"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="comment" rows="3" placeholder="Enter votre commentaire"></textarea>
+                    class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="comment" rows="5" placeholder="Enter votre commentaire"></textarea>
             </div>
             <button
                 class="bg-green-700 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline float-right"

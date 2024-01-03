@@ -3,6 +3,7 @@ import BlogView from '../views/BlogView.vue'
 import AddPostView from '../views/AddPostView.vue'
 import DetailPostView from '../views/DetailPost.vue'
 import LoginView from '@/views/LoginView.vue'
+import RegisterView from '@/views/RegisterView.vue'
 import { useAuthStore } from '@/stores/authStore'
 
 const router = createRouter({
@@ -12,6 +13,14 @@ const router = createRouter({
       path: '/',
      redirect: '/Posts'
      },
+     {
+      path: '/admin/user/add',
+      name: 'register',
+      component: RegisterView,
+      meta: {
+        requiresAuth: true
+      } 
+    },
     {
       path: '/admin/login',
       name: 'login',
